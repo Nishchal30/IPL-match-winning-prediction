@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL match prediction</title>
+</head>
+
+<body>
+    <div class="img"></div>
+    <div style="color:MintCream">
+        <form action="{{ url_for('predict')}}" method="post">
+            <h1>IPL Match Winning Team Prediction</h1>
+	    <br>
+            <h2>Enter the first team</h2><select name="team1" id="first" required="required">
+                <option value="MI">Mumbai Indians</option>
+                <option value="CSK">Chennai Super Kings</option>
+                <option value="RCB">Royal Challengers Banglore</option>
+		<option value="RR">Rajasthan Royals</option>
+		<option value="DC">Delhi Capitals</option>
+		<option value="KKR">Kolkata Knight Riders</option>
+		<option value="PBKS">Punjab Kings</option>
+		<option value="SRH">Sunrisers Hyderabad</option>
+            </select>
+	    <br>
+
+	    <h2>Enter the opponent team</h2><select name="team2" id="second" required="required">
+                <option value="MI">Mumbai Indians</option>
+                <option value="CSK">Chennai Super Kings</option>
+                <option value="RCB">Royal Challengers Banglore</option>
+		<option value="RR">Rajasthan Royals</option>
+		<option value="DC">Delhi Capitals</option>
+		<option value="KKR">Kolkata Knight Riders</option>
+		<option value="PBKS">Punjab Kings</option>
+		<option value="SRH">Sunrisers Hyderabad</option>
+            </select>
+	    <br>
+
+            <br><h2>Does your first team win the toss? </h2><select name="team1_toss_win" id="third" required="required">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+	    <br>
+
+	    <br><h2>What's the toss decision? </h2><select name="toss_decision" id="fourth" required="required">
+                <option value="bat">Batting</option>
+                <option value="field">Fielding</option>
+            </select>
+	    <br>
+
+
+	    <br><h2>Does match venue first team's homeground? </h2><select name="team1_homeground" id="fifth" required="required">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+	    <br>
+
+
+	    <br><br><button id="submit" type="submit ">Predict the winner</button>
+            
+
+	    </form>
+	    <h1><button id="predict">{{ prediction_text }}</button></h1>
+	    <br>
+</div>
+
+
+
+
+    <style>
+        body {
+            text-align: center;
+            padding: 0px;
+	}
+        
+	 .img {
+  		background: url(https://cricketaddictor.com/wp-content/uploads/2021/02/153757448_173638941016448_6980867142752435675_n-1536x864.jpg);
+		background-repeat: no-repeat;
+  		background-size: auto;
+  		background-size:100% 100%;
+  		-webkit-filter: blur(7.5px);
+  		-moz-filter: blur(7.5px);
+  		-o-filter: blur(7.5px);
+  		-ms-filter: blur(7.5px);
+  		filter: blur(7.5px);
+  		position: fixed;
+  		width: 100%;
+  		height: 100%;
+  		top: 0;
+  		left: 0;
+  		z-index: -1;
+	}
+
+        #box {
+            border-radius: 60px;
+            border-color: 45px;
+            border-style: solid;
+            font-family: cursive;
+            text-align: center;
+            background-color: rgb(175,238,238);
+            font-size: medium;
+            position: absolute;
+            width: 700px;
+            bottom: 9%;
+            height: 850px;
+            right: 30%;
+            padding: 0px;
+            margin: 0px;
+            font-size: 14px;
+        }
+        
+	#predict {
+		background: #F8F8FF;
+  		width: 25%;
+  		border: 0;
+  		margin: 20px 0 10px;
+  		box-sizing: border-box;
+  		font-size: 20px;
+		height: 45px;
+		text-align: center;
+		border-radius: 35px;
+	}
+
+        
+        #submit {
+  		background: #F8F8FF;
+  		width: 25%;
+  		border: 0;
+  		margin: 20px 0 10px;
+  		box-sizing: border-box;
+  		font-size: 20px;
+		height: 45px;
+		text-align: center;
+		border-radius: 35px;
+	}
+
+        
+        #submit:hover {
+            background-color: red;
+        }
+        
+        #first {
+            	font-family: "Roboto", sans-serif;
+  		outline: 0;
+  		background: #f2f2f2;
+  		width: 25%;
+  		border: 0;
+  		margin: 25px 0 10px;
+  		padding: 10px;
+  		box-sizing: border-box;
+ 		font-size: 20px;
+ 		height: 50px;
+		text-align: center;
+ 		border-radius: 35px;
+        }
+        
+        #second {
+            	font-family: "Roboto", sans-serif;
+  		outline: 0;
+  		background: #f2f2f2;
+  		width: 25%;
+  		border: 0;
+  		margin: 25px 0 10px;
+  		padding: 10px;
+  		box-sizing: border-box;
+ 		font-size: 20px;
+ 		height: 50px;
+		text-align: center;
+ 		border-radius: 35px;
+        }
+        
+        #third {
+            	font-family: "Roboto", sans-serif;
+  		outline: 0;
+  		background: #f2f2f2;
+  		width: 20%;
+  		border: 0;
+  		margin: 25px 0 10px;
+  		padding: 10px;
+  		box-sizing: border-box;
+ 		font-size: 20px;
+ 		height: 45px;
+		text-align: center;
+ 		border-radius: 25px;        
+	}
+        
+        #fourth {
+  		font-family: "Roboto", sans-serif;
+  		outline: 0;
+  		background: #f2f2f2;
+  		width: 20%;
+  		border: 0;
+  		margin: 25px 0 10px;
+  		padding: 10px;
+  		box-sizing: border-box;
+ 		font-size: 20px;
+ 		height: 45px;
+		text-align: center;
+ 		border-radius: 25px;
+	}
+	
+	#fifth {
+            	font-family: "Roboto", sans-serif;
+  		outline: 0;
+  		background: #f2f2f2;
+  		width: 20%;
+  		border: 0;
+  		margin: 0 0 10px;
+  		padding: 10px;
+  		box-sizing: border-box;
+ 		font-size: 20px;
+ 		height: 45px;
+ 		border-radius: 25px;
+
+        }
+        
+        #sixth {
+           	font-family: "Roboto", sans-serif;
+  		outline: 0;
+  		background: #f2f2f2;
+  		width: 20%;
+  		border: 0;
+  		margin: 25px 0 10px;
+  		padding: 10px;
+  		box-sizing: border-box;
+ 		font-size: 20px;
+ 		height: 45px;
+		text-align: center;
+ 		border-radius: 25px;
+	}
+	
+  	#seventh {
+           	font-family: "Roboto", sans-serif;
+  		outline: 0;
+  		background: #f2f2f2;
+  		width: 20%;
+  		border: 0;
+  		margin: 0 0 10px;
+  		padding: 10px;
+  		box-sizing: border-box;
+ 		font-size: 20px;
+ 		height: 40px;
+ 		border-radius: 25px;
+
+        }
+		
+    </style>
+
+</body>
+
+</html>
